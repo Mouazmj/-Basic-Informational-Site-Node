@@ -2,7 +2,7 @@ const http = require('http')
 const fs = require('fs')
 
 const server = http.createServer((req, res) => {
-    const path = ''
+    let path
     switch(req.url) {
         case '/':
             path += 'index.html';
@@ -12,5 +12,18 @@ const server = http.createServer((req, res) => {
                 break;
                 case '/contact-me':
                     path += 'contact.html'
+                    break;
+                    default:
+                        path += '404.html'
     }
+
+    fs.readFile(path, (err, data) => {
+        if (err) {
+            res.statusCode = 404
+            console.log(err)
+        } else {
+            res.statusCode = 200
+            res.end(data)
+        }
+    })
 })
